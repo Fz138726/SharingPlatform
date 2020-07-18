@@ -25,10 +25,10 @@ class db(object):
 
         sql="""CREATE TABLE COURSE (
             course_id INT auto_increment PRIMARY KEY ,
-            course_name CHAR(16) NOT NULL ,
-            course_type CHAR(16) NOT NULL ,
-            course_url CHAR(200) NOT NULL UNIQUE ,
-            platform_name CHAR(16) NOT NULL
+            course_name VARCHAR(40) NOT NULL ,
+            course_type VARCHAR(40) NOT NULL ,
+            course_url VARCHAR(200) NOT NULL UNIQUE ,
+            platform_name VARCHAR(40) NOT NULL
             )
         """
         conn = set_conect()
@@ -42,6 +42,7 @@ class db(object):
         finally:
             cursor.close()
             conn.close()
+
     #插入课程,输入课程类
     @staticmethod
     def insert_course_table(course):
@@ -108,7 +109,7 @@ class db(object):
             conn.close()
         return True
 
-    # 删除表中一个元素(对象)
+    # 删除表中所有元素
     @staticmethod
     def delete_all_course_table():
         sql = "DELETE FROM COURSE;"
@@ -147,10 +148,12 @@ class db(object):
             conn.close()
         return True
 
-    #修改表中的一个元素(id)
+    #修改表中的一个元素(类)
     @staticmethod
     def update_course_table(id,course):
         if id==None:
+            return False
+        if course==None:
             return False
         sql = "UPDATE COURSE SET course_name=%s,course_type=%s,course_url=%s,platform_name=%s WHERE course_id= %s "
         conn = set_conect()
@@ -172,12 +175,16 @@ class db(object):
     #查找课程名,输入课程名,返回课程类的数组
     @staticmethod
     def select_course_name(course_name):
-        sql="SELECT * FROM COURSE WHERE course_name= %s;"
+        if course_name==None:
+            return None
+        if course_name=="":
+            return []
+        sql="SELECT * FROM COURSE WHERE course_name like %s or course_name like %s or course_name like %s or course_name= %s;"
         courses = []
         conn = set_conect()
         cursor = conn.cursor()
         try:
-            cursor.execute(sql, (course_name))
+            cursor.execute(sql, ('%'+course_name+'%','%'+course_name,course_name+'%',course_name))
             result=cursor.fetchall()
             conn.commit()
 
@@ -198,12 +205,16 @@ class db(object):
     #查找平台类型,输入课程类型,返回课程类的数组
     @staticmethod
     def select_course_type(course_type):
-        sql = "SELECT * FROM COURSE WHERE course_type = %s;"
+        if course_type==None:
+            return None
+        if course_type=="":
+            return []
+        sql = "SELECT * FROM COURSE WHERE course_type like %s or course_type like %s or course_type like %s or course_type = %s;"
         courses = []
         conn = set_conect()
         cursor = conn.cursor()
         try:
-            cursor.execute(sql, (course_type))
+            cursor.execute(sql, ('%'+course_type+'%',course_type+'%',course_type+'%',course_type))
             conn.commit()
             result = cursor.fetchall()
             for row in result:
@@ -221,12 +232,16 @@ class db(object):
     #查找平台,输入平台名,返回课程类的数组
     @staticmethod
     def select_platform_name(platform_name):
-        sql = "SELECT * FROM COURSE WHERE platform_name= %s;"
+        if platform_name==None:
+            return None
+        if platform_name=="":
+            return []
+        sql = "SELECT * FROM COURSE WHERE platform_name like %s or platform_name like %s or platform_name like %s or platform_name= %s;"
         courses = []
         conn = set_conect()
         cursor = conn.cursor()
         try:
-            cursor.execute(sql, (platform_name))
+            cursor.execute(sql, ('%'+platform_name+'%',platform_name+'%','%'+platform_name,platform_name))
             conn.commit()
             result = cursor.fetchall()
             for row in result:
@@ -258,6 +273,35 @@ class db(object):
                 courses.append(c)
         except:
             print("select_all_course error")
+            return None
+        finally:
+            cursor.close()
+            conn.close()
+
+        return courses
+
+
+    #查找平台,输入平台名,返回课程类的数组
+    @staticmethod
+    def select_platform_course_name(platform_name,course_name):
+        if platform_name==None or course_name==None:
+            return None
+        if course_name=="":
+            return None
+        sql = "SELECT * FROM COURSE WHERE platform_name = %s and (course_name like %s or course_name like %s or course_name like %s or course_name= %s);"
+        courses = []
+        conn = set_conect()
+        cursor = conn.cursor()
+        try:
+            cursor.execute(sql, (platform_name,'%'+course_name+'%','%'+course_name,course_name+'%',course_name))
+            conn.commit()
+            result = cursor.fetchall()
+            for row in result:
+                c=Course(course_name=row[1],course_type=row[2],course_url=row[3],platform_name=row[4])
+                c.id = row[0]
+                courses.append(c)
+        except:
+            print("select_platform_name error")
             return None
         finally:
             cursor.close()

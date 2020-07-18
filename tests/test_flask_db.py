@@ -11,6 +11,7 @@ class DBTest(unittest.TestCase):
         #a = Course(course_name="中", course_type="语文", course_url="www.4399.com", platform_name="bibb")
         #b = Course(course_name="C++", course_type="计算机", course_url="www.metube.com", platform_name="metube")
         #s = [a, b]
+        db.drop_course_table()
         db.init_course_table()
         #db.insert_courses_table()
 
@@ -35,10 +36,10 @@ class DBTest(unittest.TestCase):
 
         a = Course(course_name="aaaaaaaaaaaassss", course_type="ss", course_url="4399", platform_name="sss")
         self.assertTrue(db.insert_course_table(a))
-    # 课程名超过16个字
+    # 课程名超过40个字
     def test_insert4(self):
 
-        a = Course(course_name="aaaaaaaaaaaasssss", course_type="ss", course_url="4399", platform_name="sss")
+        a = Course(course_name="aaaaaaaaaa55555555555555555555ssssssssssssssssssssssssssssssssssssaasssss", course_type="ss", course_url="4399", platform_name="sss")
         self.assertFalse(db.insert_course_table(a))
     # 课程名刚好4个字(中文)
     def test_insert5(self):
@@ -53,7 +54,7 @@ class DBTest(unittest.TestCase):
     # 课程名超过16个字(中文)
     def test_insert7(self):
 
-        a = Course(course_name="这是一个测试这s是一个测试一个测试", course_type="ss", course_url="4399", platform_name="sss")
+        a = Course(course_name="这是ssssssssssssssssssssssssssssssssssssdddddddddddddddddddddddddddddddddddddddddddddd一个测试这s是一个测试一个测试", course_type="ss", course_url="4399", platform_name="sss")
         self.assertFalse(db.insert_course_table(a))
     # 不正常输入
     def test_insert8(self):
@@ -240,8 +241,17 @@ class DBTest(unittest.TestCase):
         db.insert_courses_table(s)
         self.assertEqual(db.select_course_name(a.course_name)[0].course_name,a.course_name)
         self.assertEqual(db.select_course_name(a.course_name)[1].course_name, a.course_name)
-    #输入錯誤
+    #不全输入
     def test_selectcoursename2(self):
+        a = Course(course_name="这是一个测试", course_type="ss", course_url="4399", platform_name="")
+        b = Course(course_name="这是一个测试", course_type="sss", course_url="4399d", platform_name="rt")
+        s = [a, b]
+        db.insert_courses_table(s)
+        self.assertEqual(db.select_course_name("这是")[0].course_name,a.course_name)
+        self.assertEqual(db.select_course_name(a.course_name)[1].course_name, a.course_name)
+
+    #输入錯誤
+    def test_selectcoursename3(self):
         a = Course(course_name="这是一个测试", course_type="ss", course_url="4399", platform_name="")
         b = Course(course_name="这是一个测试", course_type="sss", course_url="4399d", platform_name="rt")
         c=Course(course_name="这是s测试", course_type="325s", course_url="439d", platform_name="t")
@@ -249,14 +259,14 @@ class DBTest(unittest.TestCase):
         db.insert_courses_table(s)
         self.assertEqual(db.select_course_name(c.course_name),[])
     #输入为None
-    def test_selectcoursename3(self):
+    def test_selectcoursename4(self):
         a = Course(course_name="这是一个测试", course_type="ss", course_url="4399", platform_name="")
         b = Course(course_name="这是一个测试", course_type="sss", course_url="4399d", platform_name="rt")
         s = [a, b]
         db.insert_courses_table(s)
         self.assertEqual(db.select_course_name(None),None)
     #表为空
-    def test_selectcoursename4(self):
+    def test_selectcoursename5(self):
         a = Course(course_name="这是一个测试", course_type="ss", course_url="4399", platform_name="")
         self.assertEqual(db.select_course_name(a),None)
 
@@ -269,10 +279,19 @@ class DBTest(unittest.TestCase):
         b = Course(course_name="这是一个测试", course_type="sss", course_url="4399d", platform_name="rt")
         s = [a, b]
         db.insert_courses_table(s)
-        self.assertEqual(db.select_course_type(a.course_type)[0].course_type,a.course_type)
+        self.assertEqual(db.select_course_type("sss")[0].course_type,a.course_type)
         self.assertEqual(db.select_course_type(a.course_type)[1].course_type,a.course_type)
-    #输入錯誤
+    #不全输入
     def test_selectcoursetype2(self):
+        a = Course(course_name="这是一个测试", course_type="sss", course_url="4399", platform_name="")
+        b = Course(course_name="这是一个测试", course_type="sss", course_url="4399d", platform_name="rt")
+        s = [a, b]
+        db.insert_courses_table(s)
+        self.assertEqual(db.select_course_type("ss")[0].course_type,a.course_type)
+        self.assertEqual(db.select_course_type(a.course_type)[1].course_type,a.course_type)
+
+    #输入錯誤
+    def test_selectcoursetype3(self):
         a = Course(course_name="这是一个测试", course_type="ss", course_url="4399", platform_name="")
         b = Course(course_name="这是一个测试", course_type="sss", course_url="4399d", platform_name="rt")
         c=Course(course_name="这是s测试", course_type="325s", course_url="439d", platform_name="t")
@@ -280,7 +299,7 @@ class DBTest(unittest.TestCase):
         db.insert_courses_table(s)
         self.assertEqual(db.select_course_type(c.course_type),[])
     #输入为None
-    def test_selectcoursetype3(self):
+    def test_selectcoursetype4(self):
         a = Course(course_name="这是一个测试", course_type="ss", course_url="4399", platform_name="")
         b = Course(course_name="这是一个测试", course_type="sss", course_url="4399d", platform_name="rt")
         s = [a, b]
@@ -288,7 +307,7 @@ class DBTest(unittest.TestCase):
         self.assertEqual(db.select_course_type(None),None)
 
     # 表为空
-    def test_selectcoursename4(self):
+    def test_selectcoursename5(self):
         a = Course(course_name="这是一个测试", course_type="ss", course_url="4399", platform_name="")
         self.assertEqual(db.select_course_type(a), None)
 
@@ -302,23 +321,31 @@ class DBTest(unittest.TestCase):
         s = [a, b]
         db.insert_courses_table(s)
         self.assertEqual(db.select_platform_name(a.platform_name)[0].course_type,a.course_type)
-    #输入錯誤
+
+    #不全输入
     def test_selectplatformname2(self):
-        a = Course(course_name="这是一个测试", course_type="ss", course_url="4399", platform_name="")
+        a = Course(course_name="这是一个测试", course_type="sss", course_url="4399", platform_name="safsd")
         b = Course(course_name="这是一个测试", course_type="sss", course_url="4399d", platform_name="rt")
-        c=Course(course_name="这是s测试", course_type="325s", course_url="439d", platform_name="t")
         s = [a, b]
         db.insert_courses_table(s)
-        self.assertEqual(db.select_platform_name(c.course_type),[])
-    #输入为None
+        self.assertEqual(db.select_platform_name("fs")[0].course_type,a.course_type)
+    #输入錯誤
     def test_selectplatformname3(self):
+        a = Course(course_name="这是一个测试", course_type="ss", course_url="4399", platform_name="f")
+        b = Course(course_name="这是一个测试", course_type="sss", course_url="4399d", platform_name="rt")
+        c=Course(course_name="这是s测试", course_type="325s", course_url="439d", platform_name="y")
+        s = [a, b]
+        db.insert_courses_table(s)
+        self.assertEqual(db.select_platform_name(c.platform_name),[])
+    #输入为None
+    def test_selectplatformname4(self):
         a = Course(course_name="这是一个测试", course_type="ss", course_url="4399", platform_name="")
         b = Course(course_name="这是一个测试", course_type="sss", course_url="4399d", platform_name="rt")
         s = [a, b]
         db.insert_courses_table(s)
         self.assertEqual(db.select_platform_name(None),None)
     #表为空
-    def test_selectcoursename4(self):
+    def test_selectplatformname5(self):
         a = Course(course_name="这是一个测试", course_type="ss", course_url="4399", platform_name="")
         self.assertEqual(db.select_platform_name(a),None)
 
@@ -334,6 +361,39 @@ class DBTest(unittest.TestCase):
     #表为空
     def test_selectall2(self):
         self.assertEqual(db.select_all_course(), [])
+
+
+    #选择平台查找课程:
+    #正确输入
+    def test_selectplatformcoursename1(self):
+        a = Course(course_name="物理", course_type="sss", course_url="4399", platform_name="s")
+        b = Course(course_name="化学", course_type="sss", course_url="4399d", platform_name="rt")
+        c=Course(course_name="高数", course_type="sss", course_url="4399s", platform_name="rt")
+        s = [a, b,c]
+        db.insert_courses_table(s)
+        self.assertEqual(db.select_platform_course_name("rt","化学")[0].course_name,b.course_name)
+    #不完全输入
+    def test_selectplatformcoursename2(self):
+        a = Course(course_name="物理", course_type="sss", course_url="4399", platform_name="s")
+        b = Course(course_name="化学", course_type="sss", course_url="4399d", platform_name="rt")
+        c=Course(course_name="高数", course_type="sss", course_url="4399s", platform_name="rt")
+        s = [a, b,c]
+        db.insert_courses_table(s)
+        self.assertEqual(db.select_platform_course_name("rt","学")[0].course_name,b.course_name)
+
+    #输入錯误
+    def test_selectplatformcoursename2(self):
+        a = Course(course_name="物理", course_type="sss", course_url="4399", platform_name="s")
+        b = Course(course_name="化学", course_type="sss", course_url="4399d", platform_name="rt")
+        c=Course(course_name="高数", course_type="sss", course_url="4399s", platform_name="rt")
+        s = [a, b,c]
+        db.insert_courses_table(s)
+        self.assertEqual(db.select_platform_course_name("rt"," "),[])
+    #输入为空
+    def test_selectplatformcoursename2(self):
+        self.assertEqual(db.select_platform_course_name(None, " "), None)
+        self.assertEqual(db.select_platform_course_name(None, None), None)
+        self.assertEqual(db.select_platform_course_name("s", None), None)
 
 
 if __name__=='__main__':
