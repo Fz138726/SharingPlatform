@@ -2,7 +2,7 @@ import pymysql
 from model import Course
 #连接数据库
 def set_conect():
-    return pymysql.connect(host='127.0.0.1',port=3306,user='root',password='CYaRon2025366986',database='db_android')
+    return pymysql.connect(host='127.0.0.1',port=3306,user='root',password='123',database='bilibili_vedio')
 class db(object):
 
     #删除表(测试用)
@@ -25,7 +25,7 @@ class db(object):
 
         sql="""CREATE TABLE COURSE (
             course_id INT auto_increment PRIMARY KEY ,
-            course_name VARCHAR(40) NOT NULL ,
+            course_name TEXT NOT NULL ,
             course_type VARCHAR(40) NOT NULL ,
             course_url VARCHAR(200) NOT NULL UNIQUE ,
             platform_name VARCHAR(40) NOT NULL
