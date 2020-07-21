@@ -34,7 +34,7 @@ def search():
             courses=db.select_platform_name(platform_name)
         elif request.form['type']=='按课程':
             course_name = request.form['keyword']
-            courses = db.select_platform_name(course_name)
+            courses = db.select_course_name(course_name)
         return render_template('index.html',courses=courses,coursetypes=coursetypes)
     else:
         return render_template('index.html',coursetypes=coursetypes)

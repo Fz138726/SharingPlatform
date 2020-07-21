@@ -27,7 +27,7 @@ class db(object):
             course_id INT auto_increment PRIMARY KEY ,
             course_name TEXT NOT NULL ,
             course_type VARCHAR(40) NOT NULL ,
-            course_url VARCHAR(200) NOT NULL UNIQUE ,
+            course_url VARCHAR(200) NOT NULL ,
             platform_name VARCHAR(40) NOT NULL
             )
         """

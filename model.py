@@ -3,7 +3,6 @@
 
 
 
-
 class USER(object):
 
     username=""
