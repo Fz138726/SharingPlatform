@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/html">
+<html>
 
 <head>
 	<style>
@@ -63,11 +63,6 @@
 			clear: both;
 		}
 
-		.reg{
-			text-align: right;
-			margin-top:20px;
-		}
-
 		/* 响应式布局 layout - 在屏幕宽度小于 600px 时， 设置为上下堆叠元素 */
 		@media screen and (max-width: 600px) {
 
@@ -85,7 +80,7 @@
 
 
 	<div class="container">
-		<form action="/login" method="POST">
+		<form action="#" method="POST">
 			<div class="row">
 				<div class="col-25">
 					<label for="userID">userID</label>
@@ -103,13 +98,11 @@
 				</div>
 			</div>
 			<div class="row">
-				<input type="submit" value="登录">
+				<input type="submit" value="注册">
+
 			</div>
 		</form>
-		<div class="reg">
-			<button class="toRegister" onclick='location.href=("/register")'>没有账号？去注册</button>
-		</div>
-		<h6><font color="red"> {{detail}}</font></h6>
+		<h6><font color="red">{{detail}}</font></h6>
 	</div>
 
 </body>

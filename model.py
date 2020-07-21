@@ -3,17 +3,15 @@
 
 
 
-class USER(object):
-
+class User(object):
+    id=-1
     username=""
     password=""
     name=""
-    age=-1
     detail=""
-    def __init__(self,username,password,name,age,detail):
+    def __init__(self,username,password,name,detail):
         self.username=username
         self.password=password
-        self.age=age
         self.name=name
         self.detail=detail
 

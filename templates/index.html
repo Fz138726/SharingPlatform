@@ -12,7 +12,15 @@
 		body {
 			font-family: Arial;
 			padding: 10px;
-			background: #f1f1f1;
+		}
+
+		.logout{
+			text-align: right;
+		}
+
+		#logout{
+			width:100px;
+			height:40px;
 		}
 
 		/* 头部标题 */
@@ -150,40 +158,123 @@
 			display: block;
 		}
 
-		.hot {
-			text-align: center;
-		}
+		.shortcut {
+            width: 800px;
+            height: 150px;
+            margin: auto auto;
+            position: relative;
+            background: #ffffff;
+            box-shadow: 0 10px 80px rgba(0, 0, 0, .6)
+        }
 
-		.button {
-			background-color: #4CAF50;
-			border: none;
-			color: white;
-			padding: 30px 64px;
-			text-align: center;
-			text-decoration: none;
-			display: inline-block;
-			font-size: 40px;
-			margin: 4px 2px;
-			cursor: pointer;
-		}
+        .shortcut input {
+            display: none;
+        }
 
-		.button2 {
-			background-color: #008CBA;
-		}
+        .container2 {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 800px;
+            height: 150px;
+            transform: scale(0);
+            opacity: 0;
+            transition: all 0.7s;
+            text-align: center;
+        }
 
-		.button3 {
-			background-color: #f44336;
-		}
+        .button {
+            width: 130px;
+            height: 60px;
+            margin: 20px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 40px;
+            cursor: pointer;
+        }
 
-		.button4 {
-			background-color: #e7e7e7;
-			color: black;
-		}
+        .nav label {
+            width: 100px;
+            height: 100px;
+            margin: 25px 25px;
+            position: absolute;
+            z-index: 10;
+            opacity: 0;
+            display: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            color: #ffffff;
+            font-size: 50px;
+            line-height: 85px;
+            text-align: center;
+            text-shadow: 0 0 15px #555555);
+        }
 
-		.button5 {
-			background-color: #555555;
-		}
+        .leftjianbian {
+            background: linear-gradient(right, rgba(250, 242, 239, 0) 1%, rgba(158, 148, 166, 0.5) 100%);
+            background: -o-linear-gradient(right, rgba(250, 242, 239, 0) 1%, rgba(158, 148, 166, 0.5) 100%);
+            background: -ms-linear-gradient(right, rgba(250, 242, 239, 0) 1%, rgba(158, 148, 166, 0.5) 100%);
+            background: -moz-linear-gradient(right, rgba(250, 242, 239, 0) 1%, rgba(158, 148, 166, 0.5) 100%);
+            background: -webkit-linear-gradient(right, rgba(250, 242, 239, 0) 1%, rgba(158, 148, 166, 0.5) 100%);
+        }
 
+        .rightjianbian {
+            background: linear-gradient(left, rgba(250, 242, 239, 0) 1%, rgba(158, 148, 166, 0.5) 100%);
+            background: -o-linear-gradient(left, rgba(250, 242, 239, 0) 1%, rgba(158, 148, 166, 0.5) 100%);
+            background: -ms-linear-gradient(left, rgba(250, 242, 239, 0) 1%, rgba(158, 148, 166, 0.5) 100%);
+            background: -moz-linear-gradient(left, rgba(250, 242, 239, 0) 1%, rgba(158, 148, 166, 0.5) 100%);
+            background: -webkit-linear-gradient(left, rgba(250, 242, 239, 0) 10%, rgba(158, 148, 166, 0.5) 100%);
+        }
+
+        .container2:hover+.nav label {
+            opacity: 0.5;
+        }
+
+        .nav label:hover {
+            opacity: 1;
+        }
+
+        .nav .down {
+            right: 0;
+        }
+
+        input:checked+.control .container2 {
+            opacity: 1;
+            transform: scale(1);
+            transition: all 1s;
+        }
+
+        input:checked+.control .nav label {
+            display: block;
+        }
+
+        .dots {
+            width: 100%;
+            height: 20px;
+            position: absolute;
+            bottom: 30px;
+            text-align: center;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            margin: 0px 5px;
+            border-radius: 50%;
+            position: relative;
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        input#b1:checked~.dots label#dot1,
+        input#b2:checked~.dots label#dot2,
+        input#b3:checked~.dots label#dot3{
+            background: rgba(0, 0, 0, 0.7);
+        }
 		.searchresult {
 			margin-left: 100px;
 			margin-right: 100px;
@@ -237,6 +328,9 @@
 </head>
 
 <body>
+	<div class="logout">
+		<button id="logout" onclick='location.href=("/logout")'>注销登录</button>
+	</div>
 	<div class="header">
 		<h1>公共课程系统</h1>
 	</div>
@@ -245,8 +339,11 @@
 			<div class="row">
 				<div class="searchType">
 					<select id="type" name="type">
-						<option value="按平台">按平台</option>
-						<option value="按课程">按课程</option>
+						<option value="全平台">全平台</option>
+						<option value="bilibili">哔哩哔哩</option>
+						<option value="IMOOC">IMOOC</option>
+						<option value="爱奇艺">爱奇艺</option>
+
 					</select>
 				</div>
 				<div class="keyword">
@@ -300,14 +397,52 @@
 			</div>
 		</li>
 	</ul>
-	<div class="hot">
-
-		<button class="button"  onclick='location.href=("/search_course/{{ coursetypes[0] }}")' >{{ coursetypes[0] }}</button>
-		<button class="button button2" onclick='location.href=("/search_course/{{ coursetypes[1] }}")'>{{ coursetypes[1] }}</button>
-		<button class="button button3" onclick='location.href=("/search_course/{{ coursetypes[2] }}")'>{{ coursetypes[2] }}</button>
-		<button class="button button4" onclick='location.href=("/search_course/{{ coursetypes[3] }}")'>{{ coursetypes[3] }}</button>
-		<button class="button button5" onclick='location.href=("/search_course/{{ coursetypes[4] }}")'>{{ coursetypes[4] }}</button>
-	</div>
+	<div class="shortcut" id="shortcut">
+        <!--//1-->
+        <input type="radio" name="btn" id="b1" checked />
+        <div class="control">
+            <div class="container2">
+                <button class="button" onclick='location.href=("/search_course/{{ coursetypes[0] }}")'>{{ coursetypes[0] }}</button>
+                <button class="button" onclick='location.href=("/search_course/{{ coursetypes[1] }}")'>{{ coursetypes[1] }}</button>
+                <button class="button" onclick='location.href=("/search_course/{{ coursetypes[2] }}")'>{{ coursetypes[2] }}</button>
+            </div>
+            <div class="nav">
+                <label for="b3" class="up leftjianbian">&lt;</label>
+                <label for="b2" class="down rightjianbian">></label>
+            </div>
+        </div>
+        <!--//2-->
+        <input type="radio" name="btn" id="b2" />
+        <div class="control">
+            <div class="container2">
+                <button class="button" onclick='location.href=("/search_course/{{ coursetypes[3] }}")'>{{ coursetypes[3] }}</button>
+                <button class="button" onclick='location.href=("/search_course/{{ coursetypes[4] }}")'>{{ coursetypes[4] }}</button>
+                <button class="button" onclick='location.href=("/search_course/{{ coursetypes[5] }}")'>{{ coursetypes[5] }}</button>
+            </div>
+            <div class="nav">
+                <label for="b1" class="up leftjianbian">&lt;</label>
+                <label for="b3" class="down rightjianbian">></label>
+            </div>
+        </div>
+        <!--//3-->
+        <input type="radio" name="btn" id="b3" />
+        <div class="control">
+            <div class="container2">
+                <button class="button" onclick='location.href=("/search_course/{{ coursetypes[6] }}")'>{{ coursetypes[6] }}</button>
+                <button class="button" onclick='location.href=("/search_course/{{ coursetypes[7] }}")'>{{ coursetypes[7] }}</button>
+                <button class="button" onclick='location.href=("/search_course/{{ coursetypes[8] }}")'>{{ coursetypes[8] }}</button>
+            </div>
+            <div class="nav">
+                <label for="b2" class="up leftjianbian">&lt;</label>
+                <label for="b1" class="down rightjianbian">></label>
+            </div>
+        </div>
+        <div class="dots">
+            <label for="b1" class="dot" id="dot1"></label>
+            <label for="b2" class="dot" id="dot2"></label>
+            <label for="b3" class="dot" id="dot3"></label>
+        </div>
+    </div>
 	<div class="searchresult">
 		<table id="course">
 			<tr>
@@ -317,9 +452,13 @@
 			</tr>
 			{%for course in courses %}
 			<tr>
-				<th>{{ course.course_name }}</th>
-				<th>{{ course.platform_name }}</th>
-				<th>{{ course.course_url }}</th>
+				<td>{{ course.course_name }}</td>
+                <td>{{ course.platform_name }}</td>
+                <td>
+					<a href="{{ course.course_url }}">
+					{{ course.course_url }}
+					</a>
+				</td>
 			</tr>
 			{% endfor %}
 		</table>

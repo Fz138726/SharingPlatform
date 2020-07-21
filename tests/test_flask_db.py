@@ -11,15 +11,21 @@ class DBTest(unittest.TestCase):
         #a = Course(course_name="中", course_type="语文", course_url="www.4399.com", platform_name="bibb")
         #b = Course(course_name="C++", course_type="计算机", course_url="www.metube.com", platform_name="metube")
         #s = [a, b]
-        db.drop_course_table()
+
         db.init_course_table()
-        #db.insert_courses_table()
+
+    # 每个单元测试后删除表
+    @classmethod
+    def tearDownClass(self):
+        db.drop_course_table()
 
     #每次测试前都会把表里元素清空
     def setUp(self):
         db.delete_all_course_table()
     # 每次测试都会完查询所有元素
     #插入元素测试
+
+
 
     # 正常插入
     def test_insert1(self):
@@ -36,10 +42,10 @@ class DBTest(unittest.TestCase):
 
         a = Course(course_name="aaaaaaaaaaaassss", course_type="ss", course_url="4399", platform_name="sss")
         self.assertTrue(db.insert_course_table(a))
-    # 课程名超过40个字
+    # 课程类型超过40个字
     def test_insert4(self):
 
-        a = Course(course_name="aaaaaaaaaa55555555555555555555ssssssssssssssssssssssssssssssssssssaasssss", course_type="ss", course_url="4399", platform_name="sss")
+        a = Course(course_name="aaasssss", course_type="saaaaaaaaa555sssssssssssssssss55555555555555555sssssssssssssssssssssssssssssssssssss", course_url="4399", platform_name="sss")
         self.assertFalse(db.insert_course_table(a))
     # 课程名刚好4个字(中文)
     def test_insert5(self):
@@ -54,7 +60,7 @@ class DBTest(unittest.TestCase):
     # 课程名超过16个字(中文)
     def test_insert7(self):
 
-        a = Course(course_name="这是ssssssssssssssssssssssssssssssssssssdddddddddddddddddddddddddddddddddddddddddddddd一个测试这s是一个测试一个测试", course_type="ss", course_url="4399", platform_name="sss")
+        a = Course(course_name="这ddd一个测试这s是一个测试一个测试", course_type="s是sssssssssssssssssssssssssssssssssssssssssssssssssssssddddddddddddddddddddddddddddddddddddddddddds", course_url="4399", platform_name="sss")
         self.assertFalse(db.insert_course_table(a))
     # 不正常输入
     def test_insert8(self):
@@ -69,7 +75,7 @@ class DBTest(unittest.TestCase):
     def test_insert9(self):
         a = Course(course_name="hh", course_type="ss", course_url="4399", platform_name="sss")
         db.insert_course_table(a)
-        self.assertFalse(db.insert_course_table(a))
+        self.assertTrue(db.insert_course_table(a))
 
 
     # 插入多条元素测试\
@@ -92,7 +98,7 @@ class DBTest(unittest.TestCase):
         self.assertFalse(db.insert_courses_table(s))
     #输入数组其中有一个是课程名超过16位
     def test_insertmany4(self):
-        a = Course(course_name="这ssssssssssssssssssssssssssssssssssssssssss一个测试", course_type="ss", course_url="4399", platform_name="")
+        a = Course(course_name="这s一个测试", course_type="ssdfsjklkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkks", course_url="4399", platform_name="")
         b = Course(course_name="这是一个测试", course_type="sss", course_url="4399d", platform_name="rt")
         s = [a, b]
         self.assertFalse(db.insert_courses_table(s))
@@ -108,7 +114,7 @@ class DBTest(unittest.TestCase):
         a = Course(course_name="这是一个测试", course_type="ss", course_url="4399d", platform_name="")
         b = Course(course_name="这是一个测试", course_type="sss", course_url="4399d", platform_name="rt")
         s=[a,b]
-        self.assertFalse(db.insert_courses_table(s))
+        self.assertTrue(db.insert_courses_table(s))
 
     #删除表中所有元素测试
 
