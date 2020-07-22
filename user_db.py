@@ -2,7 +2,7 @@ import pymysql
 from model import User
 #连接数据库
 def set_conect():
-    return pymysql.connect(host='127.0.0.1',port=3306,user='root',password='CYaRon2025366986',database='db_android')
+    return pymysql.connect(host='127.0.0.1',port=3306,user='root',password='123',database='bilibili_vedio')
 class user_db(object):
     # 删除表(测试用)
     @staticmethod

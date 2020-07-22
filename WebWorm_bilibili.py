@@ -80,7 +80,7 @@ def worm_bilibili_Pr():#爬取bilibili的python关键字的视频并返回标题
     resp_0=requests.get(url_0)
     html=resp_0.text
     while i<=50:
-        url='https://search.bilibili.com/video?keyword=Pr%E6%95%99%E7%A8%8B'%i
+        url='https://search.bilibili.com/video?keyword=Pr%E6%95%99%E7%A8%8B'+'&page=%s'%i
         i=i+1
         time.sleep(0.5)
         resp=requests.get(url)
@@ -103,7 +103,7 @@ def worm_bilibili_PS():#爬取bilibili的python关键字的视频并返回标题
     resp_0=requests.get(url_0)
     html=resp_0.text
     while i<=50:
-        url='https://search.bilibili.com/video?keyword=PS%E6%95%99%E7%A8%8B'%i
+        url='https://search.bilibili.com/video?keyword=PS%E6%95%99%E7%A8%8B'+'&page=%s'%i
         i=i+1
         time.sleep(0.5)
         resp=requests.get(url)
