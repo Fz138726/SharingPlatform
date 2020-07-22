@@ -395,11 +395,39 @@ class DBTest(unittest.TestCase):
         s = [a, b,c]
         db.insert_courses_table(s)
         self.assertEqual(db.select_platform_course_name("rt"," "),[])
-    #输入为空
+    #输入为None
     def test_selectplatformcoursename2(self):
         self.assertEqual(db.select_platform_course_name(None, " "), None)
         self.assertEqual(db.select_platform_course_name(None, None), None)
         self.assertEqual(db.select_platform_course_name("s", None), None)
+
+
+    #查找课程
+    #输入正确
+    def test_selecttypeaccuracy1(self):
+        a = Course(course_name="物理", course_type="sss", course_url="4399", platform_name="s")
+        b = Course(course_name="化学", course_type="sss", course_url="4399d", platform_name="rt")
+        c = Course(course_name="高数", course_type="sss", course_url="4399s", platform_name="rt")
+        s = [a, b, c]
+        db.insert_courses_table(s)
+        self.assertEqual(db.select_course_type_accuracy("sss")[0].course_name,a.course_name)
+    #查询失败
+    def test_selecttypeaccuracy2(self):
+        a = Course(course_name="物理", course_type="sss", course_url="4399", platform_name="s")
+        b = Course(course_name="化学", course_type="sss", course_url="4399d", platform_name="rt")
+        c = Course(course_name="高数", course_type="sss", course_url="4399s", platform_name="rt")
+        s = [a, b, c]
+        db.insert_courses_table(s)
+        self.assertEqual(db.select_course_type_accuracy("中"), [])
+    #输入为None
+    def test_selecttypeaccuracy3(self):
+        a = Course(course_name="物理", course_type="sss", course_url="4399", platform_name="s")
+        b = Course(course_name="化学", course_type="sss", course_url="4399d", platform_name="rt")
+        c = Course(course_name="高数", course_type="sss", course_url="4399s", platform_name="rt")
+        s = [a, b, c]
+        db.insert_courses_table(s)
+        self.assertEqual(db.select_course_type_accuracy(None),None)
+
 
 
 if __name__=='__main__':
