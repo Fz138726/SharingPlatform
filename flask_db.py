@@ -27,7 +27,7 @@ class db(object):
             course_id INT auto_increment PRIMARY KEY ,
             course_name TEXT NOT NULL ,
             course_type VARCHAR(40) NOT NULL ,
-            course_url VARCHAR(200) NOT NULL ,
+            course_url TEXT NOT NULL ,
             platform_name VARCHAR(40) NOT NULL
             )
         """
@@ -302,6 +302,34 @@ class db(object):
                 courses.append(c)
         except:
             print("select_platform_name error")
+            return None
+        finally:
+            cursor.close()
+            conn.close()
+        return courses
+
+    @staticmethod
+    def select_course_type_accuracy(course_type):
+        if course_type==None:
+            return None
+        if course_type=="":
+            return []
+        sql="SELECT * FROM COURSE WHERE  course_type= %s;"
+        courses = []
+        conn = set_conect()
+        cursor = conn.cursor()
+        try:
+            cursor.execute(sql, (course_type))
+            result=cursor.fetchall()
+            conn.commit()
+
+            for row in result:
+                c=Course(course_name=row[1],course_type=row[2],course_url=row[3],platform_name=row[4])
+                c.id=row[0]
+                courses.append(c)
+
+        except:
+            print("select_course_type_accuracy error")
             return None
         finally:
             cursor.close()

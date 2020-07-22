@@ -48,7 +48,7 @@ def getInfoFromIMoocForJava():
         for item in courseCardContain:
             CourseName=item.select(".course-card-name")[0].text
             CourseURL="https://www.imooc.com"+item.select("a")[0]["href"] #https://www.imooc.com/learn/1238
-            course=Course(CourseName,"iMooc","program",CourseURL)
+            course=Course(CourseName,"iMooc","JAVA",CourseURL)
             courseItem.append(course)
             # print(CourseName,CourseURL) #测试
 
