@@ -1,12 +1,13 @@
 import os
 from datetime import timedelta
 
+import paginate as paginate
 from flask import Flask,request,render_template,redirect,url_for, send_from_directory,current_app,flash,session
 from flask_db import db
 from model import Course
 from functools import wraps
 from initcourse import *
-
+from page_utils import Pagination
 app=Flask(__name__)
 app.secret_key='sjk#%#*(1315'#密key
 app.permanent_session_lifetime=timedelta(hours=1)#失效时间
@@ -27,26 +28,49 @@ def wrapper(func):
     return inner
 
 #主页面
+
+
+
 @app.route('/',methods=['POST','GET'])
 @wrapper
 def index():
+
     if request.method=='POST':
+
         pass
     else:
-        return render_template('index.html',courses=courses,coursetypes=coursetypes)
+        #分贡显示
+        parer_obj=Pagination(request.args.get("page",1),len(courses),
+                             request.path,request.args,per_page_count=20)
+        print(request.path)
+        print(request.args)
+        index_list=courses[parer_obj.start:parer_obj.end]
+        html=parer_obj.page_html()
+        return render_template('index.html',index_list=index_list,html=html,coursetypes=coursetypes)
 
 
 #按类型查找
 @app.route('/search_course/<string:course_type>',methods=['POST','GET'])
 @wrapper
 def search_course(course_type):
-    courses = db.select_course_name(course_type)
-    return render_template('index.html',courses=courses,coursetypes=coursetypes)
+    #查找
+    courses = db.select_course_type_accuracy(course_type)
+    #分页显示
+    parer_obj = Pagination(request.args.get("page", 1), len(courses),
+                           request.path, request.args, per_page_count=20)
+    print(request.path)
+    print(request.args)
+    index_list = courses[parer_obj.start:parer_obj.end]
+    html = parer_obj.page_html()
+    return render_template('index.html',index_list=index_list,html=html,coursetypes=coursetypes)
 
 #按平台查找
 @app.route('/search',methods=['POST','GET'])
 @wrapper
 def search():
+
+
+
     if request.method=='POST':
         if request.form['type']=='全平台':
             keyword=request.form['keyword']
@@ -55,9 +79,24 @@ def search():
             keyword=request.form['keyword']
             platform=request.form['type']
             courses=db.select_platform_course_name(platform,keyword)
-        return render_template('index.html',courses=courses,coursetypes=coursetypes)
+            #分页显示
+        parer_obj = Pagination(request.args.get("page", 1), len(courses),
+                                request.path, request.args, per_page_count=20)
+        print(request.path)
+        print(request.args)
+        index_list = courses[parer_obj.start:parer_obj.end]
+        html = parer_obj.page_html()
+        return render_template('index.html',index_list=index_list,html=html,coursetypes=coursetypes)
     else:
-        return render_template('index.html',coursetypes=coursetypes)
+        # 分页显示
+        courses=db.select_all_course()
+        parer_obj = Pagination(request.args.get("page", 1), len(courses),
+                               request.path, request.args, per_page_count=20)
+        print(request.path)
+        print(request.args)
+        index_list = courses[parer_obj.start:parer_obj.end]
+        html = parer_obj.page_html()
+        return render_template('index.html', index_list=index_list, html=html, coursetypes=coursetypes)
 
 
 #登入
