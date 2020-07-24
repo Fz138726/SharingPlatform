@@ -1,5 +1,5 @@
-from user_db import user_db
-from model import User
+from ShareForm_Flask.user_db import user_db
+from ShareForm_Flask.model import User
 import unittest
 
 class DBTest2(unittest.TestCase):

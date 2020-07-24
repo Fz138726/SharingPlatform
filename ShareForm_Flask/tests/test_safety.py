@@ -1,6 +1,6 @@
-from flask_db import db
-from user_db import user_db
-from model import Course,User
+from ShareForm_Flask.flask_db import db
+from ShareForm_Flask.user_db import user_db
+from ShareForm_Flask.model import Course
 
 import unittest
 #安全性测试

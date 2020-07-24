@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from  model import Course
+from ShareForm_Flask.model import Course
 import time
 
 

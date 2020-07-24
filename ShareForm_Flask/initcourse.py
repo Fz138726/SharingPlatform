@@ -1,10 +1,12 @@
-from flask_db import db
-from user_db import user_db
-from model import User,Course
+from ShareForm_Flask.flask_db import db
+from ShareForm_Flask.user_db import user_db
+from ShareForm_Flask.model import User
+
 initcourses=[]
 mylist=[]
 #表的数据初始化
 def initcourse():
+    db.init_course_table()
     return  db.select_all_course()
 
 #初始化用戶
@@ -15,4 +17,4 @@ def inituser():
 
 #按鈕名称初始化
 def initcoursetypes():
-    return ["JAVA","Python","PS","PR","iOS","C","化学","高数","物理"]
+    return ["JAVA","Python","PS","PR","iOS","C","C#","JAVA","Python"]

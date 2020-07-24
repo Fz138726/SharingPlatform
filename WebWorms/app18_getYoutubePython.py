@@ -1,6 +1,6 @@
-from selenium.webdriver import Chrome, ChromeOptions, ActionChains
+from selenium.webdriver import Chrome
 import time
-from model import Course
+from ShareForm_Flask.model import Course
 #Course类
 
 # #构造浏览器对象

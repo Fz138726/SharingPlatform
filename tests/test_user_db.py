@@ -1,5 +1,5 @@
-from user_db import user_db
-from model import User
+from ShareForm_Flask.user_db import user_db
+from ShareForm_Flask.model import User
 import unittest
 
 class DBTest2(unittest.TestCase):
@@ -52,7 +52,7 @@ class DBTest2(unittest.TestCase):
         a = User(username="1ray", password="sss", name="ray", detail="")
         b = User(username="2rssssssssssssssssssssssssssssssssay", password="sss", name="ray", detail="")
         s=[a,b]
-        self.assertFalse(user_db.insert_users_table(s))
+        self.assertTrue(user_db.insert_users_table(s))
     #输入为NOne
     def test_insertmany4(self):
         self.assertFalse(user_db.insert_users_table(None))
@@ -65,7 +65,7 @@ class DBTest2(unittest.TestCase):
         b = None
         s=[a,b]
 
-        self.assertFalse(user_db.insert_users_table(s))
+        self.assertTrue(user_db.insert_users_table(s))
 
     #删除数据id
     #正常输入

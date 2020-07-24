@@ -1,5 +1,5 @@
-from flask_db import db
-from model import Course
+from ShareForm_Flask.flask_db import db
+from ShareForm_Flask.model import Course
 import unittest
 
 

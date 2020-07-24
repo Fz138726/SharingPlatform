@@ -1,5 +1,5 @@
-from flask_db import db
-from model import Course
+from ShareForm_Flask.flask_db import db
+from ShareForm_Flask.model import Course
 import unittest
 
 
@@ -101,13 +101,13 @@ class DBTest(unittest.TestCase):
         a = Course(course_name="这s一个测试", course_type="ssdfsjklkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkks", course_url="4399", platform_name="")
         b = Course(course_name="这是一个测试", course_type="sss", course_url="4399d", platform_name="rt")
         s = [a, b]
-        self.assertFalse(db.insert_courses_table(s))
+        self.assertTrue(db.insert_courses_table(s))
     # 输入数组其中有一个是None
     def test_insertmany5(self):
         a = Course(course_name="这一个测试", course_type="ss",course_url="4399", platform_name="")
         b = None
         s = [a, b]
-        self.assertFalse(db.insert_courses_table(s))
+        self.assertTrue(db.insert_courses_table(s))
     #插入相同URL
     def test_insertmany6(self):
 

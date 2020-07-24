@@ -1,8 +1,8 @@
 import pymysql
-from model import User
+from ShareForm_Flask.model import User
 #连接数据库
 def set_conect():
-    return pymysql.connect(host='127.0.0.1',port=3306,user='root',password='123',database='bilibili_vedio')
+    return pymysql.connect(host='127.0.0.1',port=3306,user='root',password='CYaRon2025366986',database='db_android')
 class user_db(object):
     # 删除表(测试用)
     @staticmethod
@@ -71,7 +71,9 @@ class user_db(object):
         s=[]
         for row in users:
             if row==None:
-                return False
+                continue
+            if len(row.username)>16 or len(row.password)>16 or len(row.name)>16 or len(row.detail)>200:
+                continue
             a=(row.username,row.password,row.detail,row.name)
             s.append(a)
         conn = set_conect()

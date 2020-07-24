@@ -1,4 +1,4 @@
-from model import Course
+from ShareForm_Flask.model import Course
 from selenium.webdriver import Chrome,ChromeOptions
 def aiqiyi_Python():
     option=ChromeOptions()

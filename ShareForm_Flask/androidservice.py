@@ -1,14 +1,13 @@
-import os
 from datetime import timedelta
-
-import paginate as paginate
-from flask import Flask,request,render_template,redirect,url_for, send_from_directory,current_app,flash,session
-from flask_db import db
-from model import Course
 from functools import wraps
-from initcourse import *
-from page_utils import Pagination
+from ShareForm_Flask.initcourse import *
+from flask import Flask, request, render_template, redirect, url_for, session
+from ShareForm_Flask.flask_db import db
+from ShareForm_Flask.page_utils import Pagination
+
 app=Flask(__name__)
+
+
 app.secret_key='sjk#%#*(1315'#密key
 app.permanent_session_lifetime=timedelta(hours=1)#失效时间
 
@@ -16,7 +15,7 @@ inituser()
 courses=initcourse()
 coursetypes=initcoursetypes()
 
-
+#登录修飾器
 def wrapper(func):
     @wraps(func)
     def inner(*args,**kwargs):
@@ -42,8 +41,8 @@ def index():
         #分贡显示
         parer_obj=Pagination(request.args.get("page",1),len(courses),
                              request.path,request.args,per_page_count=20)
-        print(request.path)
-        print(request.args)
+        #print(request.path)
+        #print(request.args)
         index_list=courses[parer_obj.start:parer_obj.end]
         html=parer_obj.page_html()
         return render_template('index.html',index_list=index_list,html=html,coursetypes=coursetypes)
@@ -58,8 +57,8 @@ def search_course(course_type):
     #分页显示
     parer_obj = Pagination(request.args.get("page", 1), len(courses),
                            request.path, request.args, per_page_count=20)
-    print(request.path)
-    print(request.args)
+    #print(request.path)
+    #print(request.args)
     index_list = courses[parer_obj.start:parer_obj.end]
     html = parer_obj.page_html()
     return render_template('index.html',index_list=index_list,html=html,coursetypes=coursetypes)
@@ -82,8 +81,8 @@ def search():
             #分页显示
         parer_obj = Pagination(request.args.get("page", 1), len(courses),
                                 request.path, request.args, per_page_count=20)
-        print(request.path)
-        print(request.args)
+        #print(request.path)
+        #print(request.args)
         index_list = courses[parer_obj.start:parer_obj.end]
         html = parer_obj.page_html()
         return render_template('index.html',index_list=index_list,html=html,coursetypes=coursetypes)
@@ -92,8 +91,8 @@ def search():
         courses=db.select_all_course()
         parer_obj = Pagination(request.args.get("page", 1), len(courses),
                                request.path, request.args, per_page_count=20)
-        print(request.path)
-        print(request.args)
+        #print(request.path)
+        #print(request.args)
         index_list = courses[parer_obj.start:parer_obj.end]
         html = parer_obj.page_html()
         return render_template('index.html', index_list=index_list, html=html, coursetypes=coursetypes)
@@ -103,14 +102,19 @@ def search():
 @app.route('/login',methods=['POST','GET'])
 def login():
     if request.method=='POST':
+        # 获取用戶名和密码
         username=request.form['userID']
         password=request.form['password']
+        #判断
         if isempty(username,password):
             return render_template('login.html',detail="用戶名或密码不能为空")
+        if istruelength(username,password)==False:
+            return render_template('login.html',detail="用戶名或密码不能超过16位")
         if user_db.select_user_name(username)==None:
             return render_template('login.html',detail="用戶名输入錯误")
         if user_db.select_password(username,password)==None:
             return render_template('login.html',detail="密码输入錯误")
+        #获取用戶资料
         user=user_db.select_user(username,password)
         session['username']=username
         session['password']=password
@@ -123,13 +127,19 @@ def login():
 @app.route('/register',methods=['POST','GET'])
 def register():
     if request.method=='POST':
+        #获取用戶名和密码
         username=request.form['userID']
         password=request.form['password']
+        # 判断
         if isempty(username,password):
             return render_template('register.html', detail="用戶名或密码不能为空")
+        if istruelength(username,password)==False:
+            return render_template('register.html', detail="用戶名或密码不能超过16位")
         if user_db.select_user_name(username)==None:
-            user_db.insert_user_table(User(username=username,password=password,name="",detail=""))
-            return redirect(url_for('login'))
+            if user_db.insert_user_table(User(username=username,password=password,name="",detail="")):
+                return redirect(url_for('login'))
+            else:
+                return render_template('register.html', detail="注册失败")
         else:
             return render_template('register.html',detail="用戶名已被注册")
 
@@ -140,6 +150,12 @@ def register():
 def logout():
     session.clear()
     return redirect(url_for('index'))
+
+#404錯誤
+@app.errorhandler(404)
+def internal_error(error):
+    return render_template('404.html'), 404
+
 #判断是否为空
 def isempty(username,password):
     if len(username) == 0 or len(password) == 0:
@@ -148,7 +164,11 @@ def isempty(username,password):
         return True
     return False
 
-
+#判断输入用戶名和密码的長度
+def istruelength(username,password):
+    if len(username)>16 or len(password)>16:
+        return False
+    return True
 
 if __name__=='__main__':
     app.run(debug=True)

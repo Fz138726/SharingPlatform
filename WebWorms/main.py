@@ -1,16 +1,7 @@
-import aiqiyi
-import app8_getIMooc
-import app9_getIMoocJava
-import app10_getIMoocCSharp
-import app11_getIMoocCPlusPlus
-import app12_getIMoocSpringBoot
-import app13_getIMoocPHP
-import app14_getIMoocDesign
-import app16_getYoukuTed
-import app18_getYoutubePython
-import WebWorm_bilibili
-from flask_db import db
 
+from ShareForm_Flask.flask_db import db
+from WebWorms import app8_getIMooc, app9_getIMoocJava, WebWorm_bilibili, aiqiyi, app10_getIMoocCSharp, \
+    app11_getIMoocCPlusPlus, app13_getIMoocPHP, app16_getYoukuTed
 
 if __name__ == '__main__':
     db.drop_course_table()

@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-import pymysql
-from model import Course
+from ShareForm_Flask.model import Course
 
 #爬取课程与课程的URL
 def getInfoFromImmocForPython():

@@ -1,8 +1,8 @@
 import pymysql
-from model import Course
+from ShareForm_Flask.model import Course
 #连接数据库
 def set_conect():
-    return pymysql.connect(host='127.0.0.1',port=3306,user='root',password='123',database='bilibili_vedio')
+    return pymysql.connect(host='127.0.0.1',port=3306,user='root',password='CYaRon2025366986',database='db_android')
 class db(object):
 
     #删除表(测试用)
@@ -26,7 +26,7 @@ class db(object):
         sql="""CREATE TABLE COURSE (
             course_id INT auto_increment PRIMARY KEY ,
             course_name TEXT NOT NULL ,
-            course_type VARCHAR(40) NOT NULL ,
+            course_type VARCHAR(40) NOT NULL  ,
             course_url TEXT NOT NULL ,
             platform_name VARCHAR(40) NOT NULL
             )
@@ -73,7 +73,9 @@ class db(object):
         s=[]
         for row in courses:
             if row==None:
-                return False
+                continue
+            if len(row.course_type)>40 or len(row.platform_name)>40:
+                continue
             a=(row.course_name,row.course_type,row.course_url,row.platform_name)
             s.append(a)
         conn = set_conect()
@@ -179,7 +181,7 @@ class db(object):
             return None
         if course_name=="":
             return []
-        sql="SELECT * FROM COURSE WHERE course_name like %s or course_name like %s or course_name like %s or course_name= %s;"
+        sql="SELECT DISTINCT * FROM COURSE WHERE course_name like %s or course_name like %s or course_name like %s or course_name= %s;"
         courses = []
         conn = set_conect()
         cursor = conn.cursor()
@@ -209,7 +211,7 @@ class db(object):
             return None
         if course_type=="":
             return []
-        sql = "SELECT * FROM COURSE WHERE course_type like %s or course_type like %s or course_type like %s or course_type = %s;"
+        sql = "SELECT DISTINCT * FROM COURSE WHERE course_type like %s or course_type like %s or course_type like %s or course_type = %s;"
         courses = []
         conn = set_conect()
         cursor = conn.cursor()
@@ -236,7 +238,7 @@ class db(object):
             return None
         if platform_name=="":
             return []
-        sql = "SELECT * FROM COURSE WHERE platform_name like %s or platform_name like %s or platform_name like %s or platform_name= %s;"
+        sql = "SELECT DISTINCT * FROM COURSE WHERE platform_name like %s or platform_name like %s or platform_name like %s or platform_name= %s;"
         courses = []
         conn = set_conect()
         cursor = conn.cursor()
@@ -259,7 +261,7 @@ class db(object):
     #查找所有,返回课程类的数组
     @staticmethod
     def select_all_course():
-        sql = "SELECT * FROM COURSE;"
+        sql = "SELECT DISTINCT * FROM COURSE ORDER BY course_type;"
         courses = []
         conn = set_conect()
         cursor = conn.cursor()
@@ -288,7 +290,7 @@ class db(object):
             return None
         if course_name=="":
             return None
-        sql = "SELECT * FROM COURSE WHERE platform_name = %s and (course_name like %s or course_name like %s or course_name like %s or course_name= %s);"
+        sql = "SELECT DISTINCT * FROM COURSE WHERE platform_name = %s and (course_name like %s or course_name like %s or course_name like %s or course_name= %s);"
         courses = []
         conn = set_conect()
         cursor = conn.cursor()
@@ -314,7 +316,7 @@ class db(object):
             return None
         if course_type=="":
             return []
-        sql="SELECT * FROM COURSE WHERE  course_type= %s;"
+        sql="SELECT DISTINCT * FROM COURSE WHERE  course_type= %s;"
         courses = []
         conn = set_conect()
         cursor = conn.cursor()
